@@ -10,6 +10,9 @@ import android.widget.TimePicker;
 
 import androidx.fragment.app.DialogFragment;
 
+/**
+ * Basic Time Picker Fragment which brings up the widget and writes to timeView.
+ */
 public class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
 
     @Override

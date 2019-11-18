@@ -14,6 +14,17 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+/**
+ * @author Andrew Vu (6044937)
+ *
+ * Activity for viewing Contacts. "Next Contact" button cycles through contacts and displays
+ * all meetings with the contact in a listview. Meetings with no listed contact is also
+ * grouped in its own category. "Purge Contact" button will bring up a confirmation
+ * before erasing all meetings associated with an individual contact.
+ *
+ * Bundles are used to retain the pointer int when rotating the screen to keep track of
+ * which contact is being viewed.
+ */
 public class ContactViewer extends AppCompatActivity {
     ArrayList<String> ar;
     int pointer;
@@ -32,6 +43,9 @@ public class ContactViewer extends AppCompatActivity {
         }
     }
 
+    /**
+     * Queries table to build a list of contacts
+     */
     private void queryContacts() {
         ar = new ArrayList<String>();
         pointer = 0;
@@ -52,6 +66,10 @@ public class ContactViewer extends AppCompatActivity {
         }
     }
 
+    /**
+     * confirmation prompt for purging a contact
+     * @param view
+     */
     public void purgeContact(View view) {
         new AlertDialog.Builder(ContactViewer.this)
                 .setTitle(R.string.warning)
@@ -66,6 +84,9 @@ public class ContactViewer extends AppCompatActivity {
                 }).show();
     }
 
+    /**
+     * purges meetings with a selected particular contact
+     */
     private void deleteContact() {
         DataHelper dh = new DataHelper(this);
         SQLiteDatabase dataChanger = dh.getWritableDatabase();
@@ -75,6 +96,10 @@ public class ContactViewer extends AppCompatActivity {
         lv.setAdapter(null);
     }
 
+    /**
+     * cycles through list of contacts
+     * @param view
+     */
     public void nextContact(View view) {
         pointer = (pointer + 1) % ar.size();
         TextView textView = (TextView) findViewById(R.id.contactView);
@@ -82,6 +107,10 @@ public class ContactViewer extends AppCompatActivity {
         query(ar.get(pointer));
     }
 
+    /**
+     * queries table for all meetings based on the current contact, pointed at by the pointer
+     * @param contact
+     */
     private void query(String contact) {
         String[] fields = new String[]{"id", "date", "time", "name", "phone"};
         ListView lv = (ListView) findViewById(R.id.contactList);
@@ -114,6 +143,10 @@ public class ContactViewer extends AppCompatActivity {
         datareader.close();
     }
 
+    /**
+     * stores pointer which indicates which contact is being displayed
+     * @param bundle
+     */
     @Override
     public void onSaveInstanceState(Bundle bundle) {
         bundle.putInt("pointer", pointer);

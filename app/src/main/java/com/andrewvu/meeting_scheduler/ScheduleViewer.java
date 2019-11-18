@@ -17,6 +17,13 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
+/**
+ * @author Andrew Vu (6044937)
+ *
+ * Activity displays a calendar and allows the user to view a list of all meetings on
+ * any selected date. There are also various button options for removing meetings on a
+ * specified date, removing all expired meetings, or completely removing all meetings stored.
+ */
 public class ScheduleViewer extends AppCompatActivity {
     CalendarView calendarView;      // calendar view
     String date;
@@ -45,6 +52,10 @@ public class ScheduleViewer extends AppCompatActivity {
         }
     }
 
+    /**
+     * queries table based on selected date
+     * @param date
+     */
     private void query(String date) {
         String[] fields = new String[]{"id", "date", "time", "name", "phone"};
         ListView lv = (ListView) findViewById(R.id.calendarList);
@@ -110,7 +121,7 @@ public class ScheduleViewer extends AppCompatActivity {
     }
 
     /**
-     * Dialogue confirmation for clearing all expired meetings
+     * Confirmation prompt for clearing all expired meetings
      *
      * @param view
      */
@@ -128,6 +139,9 @@ public class ScheduleViewer extends AppCompatActivity {
                 }).show();
     }
 
+    /**
+     * deletes entry in table if it is expired
+     */
     private void deleteExpired() {
         DataHelper dh = new DataHelper(this);
         SQLiteDatabase dataReader = dh.getReadableDatabase();
@@ -154,6 +168,11 @@ public class ScheduleViewer extends AppCompatActivity {
         dataChanger.close();
     }
 
+    /**
+     * checks if checkDate is expired by comparing to current date
+     * @param checkDate date being checked
+     * @return true or false
+     */
     private boolean expired(String checkDate) {
         StringTokenizer str = new StringTokenizer(checkDate, "/");
         if (str.countTokens() == 3) {
@@ -170,6 +189,10 @@ public class ScheduleViewer extends AppCompatActivity {
         return false;
     }
 
+    /**
+     * confirmation prompt for wiping all meeting data
+     * @param view
+     */
     public void wipeAll(View view) {
         new AlertDialog.Builder(ScheduleViewer.this)
                 .setTitle(R.string.warning)
@@ -184,6 +207,9 @@ public class ScheduleViewer extends AppCompatActivity {
                 }).show();
     }
 
+    /**
+     * erases all meeting data without dropping table to avoid crashing
+     */
     private void nuke() {
         DataHelper dh = new DataHelper(this);
         SQLiteDatabase dataReader = dh.getReadableDatabase();
@@ -210,6 +236,10 @@ public class ScheduleViewer extends AppCompatActivity {
         startActivity(new Intent(this, MainActivity.class));
     }
 
+    /**
+     * bundles information on which date is being viewed
+     * @param bundle
+     */
     @Override
     public void onSaveInstanceState(Bundle bundle) {
         bundle.putLong("calendarDate", calendarView.getDate());

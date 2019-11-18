@@ -18,7 +18,15 @@ import android.widget.CalendarView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
+/**
+ * @author Andrew Vu (6044937)
+ *
+ * Form for adding a meeting to the database. Date is set based on calendar widget.
+ * Time is set through a widget fragment created when the corresponding button is pressed.
+ * Contact is set through an intent and listener.
+ * Save commits the data to the database, while cancel brings up a prompt before discarding
+ * unsaved data.
+ */
 public class ScheduleForm extends AppCompatActivity {
     CalendarView calendarView;      // calendar view
     private String contactName;     // contact name
@@ -43,6 +51,17 @@ public class ScheduleForm extends AppCompatActivity {
         year = CurrentDate.getYear();
         date = CurrentDate.getDate();
 
+        // unbundles
+        if (savedInstanceState != null) {
+            contactName = savedInstanceState.getString("contactName");
+            contactNumber = savedInstanceState.getString("contactNumber");
+            date = savedInstanceState.getString("date");
+            time= savedInstanceState.getString("time");
+            day= savedInstanceState.getInt("day");
+            month= savedInstanceState.getInt("month");
+            year= savedInstanceState.getInt("year");
+        }
+
 
         calendarView = (CalendarView) findViewById(R.id.calendarPicker);
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
@@ -56,11 +75,19 @@ public class ScheduleForm extends AppCompatActivity {
         });
     }
 
+    /**
+     * Creates a dialog fragment displaying a time picker widget.
+     * @param view
+     */
     public void pickTime(View view) {
         DialogFragment newFragment = new TimePickerFragment();
         newFragment.show(getSupportFragmentManager(), "timePicker");
     }
 
+    /**
+     * Creates a new intent for picking contact information.
+     * @param view
+     */
     public void addContact(View view) {
         Intent pickContact = new Intent(Intent.ACTION_PICK, Uri.parse("content://contacts"));
         // Show user only contacts with phone numbers
@@ -68,6 +95,12 @@ public class ScheduleForm extends AppCompatActivity {
         startActivityForResult(pickContact, 222);
     }
 
+    /**
+     * Listens for contact information
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 222) { // requestCode 222 - add contact
             if (resultCode == RESULT_OK) {
@@ -87,6 +120,10 @@ public class ScheduleForm extends AppCompatActivity {
         }
     }
 
+    /**
+     * Saves information by calling writeDatabase()
+     * @param view
+     */
     public void saveSchedule(View view) {
         // save info
         TextView textView = (TextView) findViewById(R.id.timeView);
@@ -104,6 +141,9 @@ public class ScheduleForm extends AppCompatActivity {
         closeActivity();
     }
 
+    /**
+     * Commits entry to database
+     */
     private void writeDatabase() {
         DataHelper dh = new DataHelper(this);
         SQLiteDatabase dataChanger = dh.getWritableDatabase();
@@ -125,7 +165,10 @@ public class ScheduleForm extends AppCompatActivity {
         dataChanger.close();
     }
 
-
+    /**
+     * Confirmation prompt for cancelling a meeting entry.
+     * @param view
+     */
     public void cancelSchedule(View view) {
         new AlertDialog.Builder(ScheduleForm.this)
                 .setTitle(R.string.warning)
@@ -140,10 +183,29 @@ public class ScheduleForm extends AppCompatActivity {
                 }).show();
     }
 
-    // Go back to main activity, finish() current activity
+    /**
+     * Closes activity and returns to main
+     */
     public void closeActivity() {
         startActivity(new Intent(this, MainActivity.class));
         finish();
+    }
+
+    /**
+     * Bundles form data
+     * @param bundle
+     */
+    @Override
+    public void onSaveInstanceState(Bundle bundle){
+        bundle.putString("contactName",contactName);
+        bundle.putString("contactNumber",contactNumber);
+        bundle.putString("date",date);
+        TextView textView = (TextView)findViewById(R.id.timeView);
+        bundle.putString("time",textView.toString());
+        bundle.putInt("day",day);
+        bundle.putInt("month",month);
+        bundle.putInt("year",year);
+        super.onSaveInstanceState(bundle);
     }
 
 }

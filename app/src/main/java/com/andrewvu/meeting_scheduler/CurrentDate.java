@@ -4,7 +4,7 @@ import java.util.Calendar;
 
 /**
  * @author Andrew Vu (6044937)
- * <p>
+ *
  * Static class to return int value for current day of month, month (0-11), year, or String of date.
  * Created because many methods of Date are deprecated, and current date can be used in multiple
  * activities in this Android Application.

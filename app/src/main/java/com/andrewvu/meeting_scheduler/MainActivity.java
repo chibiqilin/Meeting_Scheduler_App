@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import java.time.DayOfWeek;
 import java.util.Calendar;
 
 import android.os.Bundle;
@@ -18,10 +17,27 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.Date;
 
+/**
+ * @author Andrew Vu (6044937)
+ *
+ * Main activity. Displays the current date's meetings in a listview automatically so that users
+ * do not have to fumble through any menus to view relevant appointments.
+ *
+ * Buttons located on the bottom of the screen allow for adding additional meetings,
+ * switching to a schedule view, switching to a contact view, or pushing the meetings
+ * of the current day to a later date.
+ *
+ * Pushing on a weekday will push scheduled meetings to the next weekday day. Similarly, pushing
+ * on a weekend will push scheduled meetings to the next weekend day.
+ */
 public class MainActivity extends AppCompatActivity {
 
+    /**
+     * Does not use bundles as there is no information to bundle when rotating screen.
+     * queries the current date automatically on create.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +45,10 @@ public class MainActivity extends AppCompatActivity {
         query(CurrentDate.getDate());
     }
 
+    /**
+     * query all meetings based on an input date
+     * @param date
+     */
     private void query(String date) {
         String[] fields = new String[]{"id", "date", "time", "name", "phone"};
         ListView lv = (ListView) findViewById(R.id.todaysList);
@@ -61,18 +81,34 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Starts a new meeting form
+     * @param view
+     */
     public void createSchedule(View view) {
         startActivity(new Intent(this, ScheduleForm.class));
     }
 
+    /**
+     * Starts a view schedule activity, to view schedule based on dates
+     * @param view
+     */
     public void viewSchedule(View view) {
         startActivity(new Intent(this, ScheduleViewer.class));
     }
 
+    /**
+     * Starts a view contact activity, to view contacts and relevant meetings
+     * @param view
+     */
     public void viewContacts(View view) {
         startActivity(new Intent(this, ContactViewer.class));
     }
 
+    /**
+     * Confirmation prompt before pushing today's meetings.
+     * @param view
+     */
     public void pushMeetings(View view) {
         new AlertDialog.Builder(MainActivity.this)
                 .setTitle(R.string.warning)
@@ -89,6 +125,9 @@ public class MainActivity extends AppCompatActivity {
                 }).show();
     }
 
+    /**
+     * Pushes meetings to the next weekday/weekend corresponding with the current day of the week.
+     */
     private void pushToday() {
         DataHelper dh = new DataHelper(this);
         SQLiteDatabase dataChanger = dh.getWritableDatabase();

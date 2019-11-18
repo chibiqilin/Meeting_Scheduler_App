@@ -4,6 +4,9 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+/**
+ * Basic Data Helper based on in class material
+ */
 public class DataHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 2;
     public static final String DB_NAME = "schedule";    // database
