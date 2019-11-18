@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Meeting_Scheduler</string>
+    <string name="viewSchedule">View Schedule</string>
+    <string name="addMeeting">Add Meeting</string>
+    <string name="setTime">Set Time</string>
+    <string name="defaultTime">00:00</string>
+    <string name="addContact">Add Contact</string>
+    <string name="defaultContact">None</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
 </resources>
