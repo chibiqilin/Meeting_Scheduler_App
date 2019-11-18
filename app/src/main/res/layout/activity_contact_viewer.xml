@@ -5,47 +5,39 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".ContactViewer">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/contactView"
+        android:id="@+id/contactView"
+        />
     <ListView
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_weight="30"
-        android:id="@+id/todaysList"
-        />
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="@string/addMeeting"
-        android:onClick="createSchedule"
+        android:id="@+id/contactList"
         />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:gravity="center"
-        android:orientation="horizontal">
+        >
         <Button
             android:layout_width="0dip"
-            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="@string/viewSchedule"
-            android:onClick="viewSchedule"
+            android:layout_height="match_parent"
+            android:text="Next Contact"
+            android:onClick="nextContact"
             />
         <Button
             android:layout_width="0dip"
-            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="@string/viewContacts"
-            android:onClick="viewContacts"
-            />
-        <Button
-            android:layout_width="0dip"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/push"
-            android:onClick="pushMeetings"
+            android:text="Purge Contact"
+            android:onClick="purgeContact"
             />
     </LinearLayout>
+
 </LinearLayout>

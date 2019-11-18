@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Meeting_Scheduler</string>
-    <string name="viewSchedule">View Schedule</string>
+    <string name="viewSchedule">Calendar</string>
     <string name="addMeeting">Add Meeting</string>
     <string name="setTime">Set Time</string>
     <string name="defaultTime">00:00</string>
@@ -8,4 +8,19 @@
     <string name="defaultContact">None</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
+    <string name="viewContacts">Contacts</string>
+    <string name="push">Push Meetings</string>
+    <string name="warning">Warning!</string>
+    <string name="cancelMessage">Unsaved changes will be discarded. Are you sure you want to leave?</string>
+    <string name="negativeButton">Maybe not...</string>
+    <string name="positiveButton">I\'m sure!</string>
+    <string name="pushMessage">Are you sure you want to push all of today\'s meetings to tomorrow?</string>
+    <string name="clearDate">Clear Date</string>
+    <string name="clearExpired">Clear Expired</string>
+    <string name="wipeAll">Wipe All!</string>
+    <string name="clearDateMessage">Are you sure you want to clear all meetings on this date?</string>
+    <string name="clearExpiredMessage">Are you sure you want to remove all meetings before today?</string>
+    <string name="clearAllMessage">Are you sure you want to clear all meetings?</string>
+    <string name="contactView">Select a Contact</string>
+    <string name="clearContactMessage">Are you sure you want to remove all meetings with this Contact?</string>
 </resources>

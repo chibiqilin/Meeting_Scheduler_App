@@ -1,7 +1,6 @@
 package com.andrewvu.meeting_scheduler;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
@@ -12,7 +11,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.view.View;
@@ -31,7 +29,6 @@ public class ScheduleForm extends AppCompatActivity {
     private int month;  // month of year
     private int year;   // year
 
-    @RequiresApi(api = Build.VERSION_CODES.N) // requires API 23 for Calendar function
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +44,7 @@ public class ScheduleForm extends AppCompatActivity {
         date = CurrentDate.getDate();
 
 
-        calendarView = (CalendarView) findViewById(R.id.calendarView);
+        calendarView = (CalendarView) findViewById(R.id.calendarPicker);
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int y, int m, int dayOfMonth) {
@@ -61,7 +58,7 @@ public class ScheduleForm extends AppCompatActivity {
 
     public void pickTime(View view) {
         DialogFragment newFragment = new TimePickerFragment();
-        newFragment.show(getSupportFragmentManager(),"timePicker");
+        newFragment.show(getSupportFragmentManager(), "timePicker");
     }
 
     public void addContact(View view) {
@@ -72,9 +69,7 @@ public class ScheduleForm extends AppCompatActivity {
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 111) { // requestCode 111 - pick time
-
-        } else if (requestCode == 222) { // requestCode 222 - add contact
+        if (requestCode == 222) { // requestCode 222 - add contact
             if (resultCode == RESULT_OK) {
                 Uri uri = data.getData();
                 String[] cString = {
@@ -110,20 +105,20 @@ public class ScheduleForm extends AppCompatActivity {
     }
 
     private void writeDatabase() {
-        DataHelper dh = new DataHelper (this);
+        DataHelper dh = new DataHelper(this);
         SQLiteDatabase dataChanger = dh.getWritableDatabase();
 
         ContentValues entry = new ContentValues();
-        entry.put("date",date);
-        entry.put("time",time);
+        entry.put("date", date);
+        entry.put("time", time);
         if (contactName.equals(""))
             entry.put("name", "No Contact");
         else
-            entry.put("name",contactName);
+            entry.put("name", contactName);
         if (contactNumber.equals(""))
             entry.put("phone", "No Number");
         else
-            entry.put("phone",contactNumber);
+            entry.put("phone", contactNumber);
 
 
         dataChanger.insert(DataHelper.DB_TABLE, null, entry);
@@ -133,11 +128,11 @@ public class ScheduleForm extends AppCompatActivity {
 
     public void cancelSchedule(View view) {
         new AlertDialog.Builder(ScheduleForm.this)
-                .setTitle("Warning!")
-                .setMessage("Unsaved changes will be discarded. Are you sure you want to leave?")
+                .setTitle(R.string.warning)
+                .setMessage(R.string.cancelMessage)
                 .setCancelable(true)
-                .setNegativeButton("Maybe not...", null)
-                .setPositiveButton("I'm sure!", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.negativeButton, null)
+                .setPositiveButton(R.string.positiveButton, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int which) {
                         closeActivity();

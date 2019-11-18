@@ -16,12 +16,14 @@ public class DataHelper extends SQLiteOpenHelper {
 
 
     DataHelper(Context context) {
-        super(context,DB_NAME,null,DATABASE_VERSION);
+        super(context, DB_NAME, null, DATABASE_VERSION);
     }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_TABLE);
     }
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         //How to migrate or reconstruct data from old version to new on upgrade
